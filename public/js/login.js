@@ -12,10 +12,10 @@ const loginFormHandler = async (event) => {
       body: JSON.stringify({ email, password }),
       headers: { 'Content-Type': 'application/json' },
     });
-
+console.log(response);
     if (response.ok) {
       // If successful, redirect the browser to the profile page
-      document.location.replace('/dashboard');
+      document.location.replace('/');
     } else {
       alert(response.statusText);
     }
@@ -36,7 +36,7 @@ const signupFormHandler = async (event) => {
       headers: { 'Content-Type': 'application/json' },
     });
     if (response.ok) {
-      document.location.replace('/dashboard');
+      document.location.replace('/');
     } else {
       alert(response.statusText);
     }

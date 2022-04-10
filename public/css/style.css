@@ -1,5 +1,13 @@
-header, .project:not(:last-child) {
-  border-bottom: 1px solid #ccc;
+header, nav {
+  color: whitesmoke;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover{
+  text-decoration: none;
 }
 
 .no-button {
@@ -21,4 +29,11 @@ header, .project:not(:last-child) {
   color: #056605;
   font-weight: bold;
   margin-left: -5px;
+}
+
+.visible {
+  visibility: visible;
+}
+.invisible {
+  visibility: hidden;
 }

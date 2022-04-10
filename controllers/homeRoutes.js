@@ -1,24 +1,25 @@
 const router = require('express').Router();
-const {  User } = require('../models');
+const {  User,Blog,Comment } = require('../models');
 const withAuth = require('../utils/auth');
 
-router.get('/dashboard',withAuth, async (req, res) => {
-  try {
-    console.log(req.session.logged_in);
-    res.render('dashboard', { 
-      // projects, 
-      logged_in: req.session.logged_in 
-    });
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
 
 router.get('/', async (req, res) => {
   try {
+    const BlogData = await Blog.findAll({
+      include: [
+        {
+          model: User,
+          attributes: ['name'],
+        },
+      ],
+    });
+
+    // Serialize data so the template can read it
+    const blogs = BlogData.map((project) => project.get({ plain: true }));
+
     // Pass serialized data and session flag into template
     res.render('homepage', { 
-      // projects, 
+      blogs, 
       logged_in: req.session.logged_in 
     });
   } catch (err) {
@@ -29,11 +30,70 @@ router.get('/', async (req, res) => {
 router.get('/login', (req, res) => {
   // If the user is already logged in, redirect the request to another route
   if (req.session.logged_in) {
-    res.redirect('/dashboard');
+    res.redirect('/');
     return;
   }
 
   res.render('login');
+});
+
+router.get('/dashboard', async (req, res) => {
+  try {
+    if(req.session.logged_in == 'undefined' || !req.session.logged_in){
+      res.redirect('login');
+    }
+
+    const BlogData = await Blog.findAll({
+      include: [
+        {
+          model: User,
+          attributes: ['name'],
+        },
+      ],
+    });
+
+    // Serialize data so the template can read it
+    const blogs = BlogData.map((project) => project.get({ plain: true }));
+
+    console.log(`Dashboard name - ${req.session.name}`)
+    res.render('dashboard', { 
+      blogs, 
+      name: req.session.name, 
+      logged_in: req.session.logged_in 
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+router.get('/addComment/blog/:id', async (req, res) => {
+  try {
+    if(req.session.logged_in == 'undefined' || !req.session.logged_in){
+      res.redirect('/login');
+    }
+    console.log(`Entered add comment route - ${req.params.id}`);
+
+    const BlogData = await Blog.findByPk(req.params.id,{
+      include: [
+        {
+          model: User
+        },
+      ],
+    });
+
+    // Serialize data so the template can read it
+    const blog =BlogData.get({ plain: true });
+    console.log(`\n\nadd comment route - get blog data - ${ JSON.stringify(blog)}`);
+
+    // Pass serialized data and session flag into template
+    res.render('comment', { 
+      blog, 
+      logged_in: req.session.logged_in 
+    });
+  } catch (err) {
+    console.log(err)
+    res.status(500).json(err);
+  }
 });
 
 module.exports = router;
