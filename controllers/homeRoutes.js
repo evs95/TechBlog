@@ -46,16 +46,22 @@ router.get('/dashboard', async (req, res) => {
     const BlogData = await Blog.findAll({
       include: [
         {
-          model: User,
-          attributes: ['name'],
+          model: User
         },
       ],
-    });
+    },
+    {
+      where: {
+        UserId: req.session.user_id,
+      }});
 
     // Serialize data so the template can read it
-    const blogs = BlogData.map((project) => project.get({ plain: true }));
+    const blogss = BlogData.filter((p) => p.UserId == req.session.user_id);
+    const blogs = blogss.map((project) => project.get({ plain: true }));
 
-    console.log(`Dashboard name - ${req.session.name}`)
+    console.log(`\n\nDashboard name - ${req.session.user_id}\n\n`)
+    console.log(`\n\nDashboard name - ${JSON.stringify(BlogData)}\n\n`)
+    console.log(`\n\nDashboard name - ${JSON.stringify(blogss)}\n\n`)
     res.render('dashboard', { 
       blogs, 
       name: req.session.name, 
@@ -87,6 +93,36 @@ router.get('/addComment/blog/:id', async (req, res) => {
 
     // Pass serialized data and session flag into template
     res.render('comment', { 
+      blog, 
+      logged_in: req.session.logged_in 
+    });
+  } catch (err) {
+    console.log(err)
+    res.status(500).json(err);
+  }
+});
+
+router.get('/blog/:id', async (req, res) => {
+  try {
+    if(req.session.logged_in == 'undefined' || !req.session.logged_in){
+      res.redirect('/login');
+    }
+    console.log(`Entered edit blog route - ${req.params.id}`);
+
+    const BlogData = await Blog.findByPk(req.params.id,{
+      include: [
+        {
+          model: User
+        },
+      ],
+    });
+
+    // Serialize data so the template can read it
+    const blog =BlogData.get({ plain: true });
+    console.log(`\n\nadd comment route - get blog data - ${ JSON.stringify(blog)}`);
+
+    // Pass serialized data and session flag into template
+    res.render('blog', { 
       blog, 
       logged_in: req.session.logged_in 
     });

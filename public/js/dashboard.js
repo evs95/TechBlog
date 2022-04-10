@@ -4,13 +4,13 @@ const createPost = async (event) => {
     event.preventDefault();
   
     // Collect values from the login form
-    const description = document.querySelector('#comment-txt').value.trim();
-    const blogId = document.querySelector('.blogId').id;
-    if (description && blogId) {
+    const title = document.querySelector('#title-txt').value.trim();
+    const content = document.querySelector('#content-txt').value.trim();
+    if (title && content) {
       // Send a POST request to the API endpoint
-      const response = await fetch('/api/comment', {
+      const response = await fetch('/api/blogs', {
         method: 'POST',
-        body: JSON.stringify({ description, blogId}),
+        body: JSON.stringify({ title, content}),
         headers: { 'Content-Type': 'application/json' },
       });
   console.log(response);
@@ -27,8 +27,11 @@ const createPost = async (event) => {
     document
     .querySelector('#new-post-form').classList.remove('invisible');
     document
+  .querySelector('#blogsDiv').classList.add('invisible');
+    document
   .querySelector('#new-post-form').classList.add('visible');
   }
+
 
   if(  document
     .querySelector('#post-create'))
@@ -41,6 +44,8 @@ const createPost = async (event) => {
   document
   .querySelector('#new-post')
   .addEventListener('click', addNewPost);
-
+  
+  if(document
+    .querySelector('#new-post-form'))
   document
   .querySelector('#new-post-form').classList.add('invisible');

@@ -3,6 +3,16 @@
     <h2>Welcome, {{name}}!</h2>
   </div>
 </div>
+<div id="blogsDiv">
+{{#each blogs as |blog| }}
+<a href="blog/{{blog.id}}">
+<div class="alert alert-secondary" >
+  <span>{{blog.Title}}</span>
+  <span class="float-end">{{format_date blog.createdAt}}</span>
+</div>
+</a>
+{{/each}}
+</div>
 
 <form class="form" id="new-post-form">
       <div class="form-group">
@@ -19,7 +29,7 @@
       <div class="form-group">
         <button class="btn btn-primary" id="post-create">Create</button>
       </div>
-    </form>
+</form>
 
 <div class="text-center" >
 <button type="button" class="btn btn-primary btn-lg" id="new-post">➕ New Post</button>

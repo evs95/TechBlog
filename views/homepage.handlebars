@@ -1,16 +1,5 @@
 <!-- Loop over each object in the blogs array -->
 {{#each blogs as |blog| }}
-{{!-- <div class="row mb-4 blog">
-  <div class="">
-    <h2>
-      <a href="/blog/{{blog.id}}">{{blog.Title}}</a>
-    </h2>
-    <p>
-      {{blog.Content}}
-    </p>
-    <p>- Created by {{blog.user.name}} on {{format_date blog.createdAt}}</p>
-  </div>
-</div> --}}
 <div class="card">
   <a href="/addComment/blog/{{blog.id}}">
   <div class="card-header">

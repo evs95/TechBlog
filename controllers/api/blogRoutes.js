@@ -35,10 +35,28 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const blogData = await Blog.create({
-      Title: req.body.Title,
-      Content: req.body.Content,
-      UserId: req.body.UserId,
+      Title: req.body.title,
+      Content: req.body.content,
+      UserId: req.session.user_id,
     });
+    res.status(200).json(blogData);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+});
+
+// UPDATE a card
+router.put('/:id', async (req, res) => {
+  try {
+    const blogData = await Blog.update({
+      Title: req.body.title,
+      Content: req.body.content,
+      UserId: req.session.user_id,
+    },
+    {
+      where: {
+        id: req.params.id,
+      }});
     res.status(200).json(blogData);
   } catch (err) {
     res.status(400).json(err);

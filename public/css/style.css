@@ -32,8 +32,8 @@ a:hover{
 }
 
 .visible {
-  visibility: visible;
+  display: ''
 }
 .invisible {
-  visibility: hidden;
+  display: none;
 }
