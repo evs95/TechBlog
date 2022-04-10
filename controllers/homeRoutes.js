@@ -59,9 +59,6 @@ router.get('/dashboard', async (req, res) => {
     const blogss = BlogData.filter((p) => p.UserId == req.session.user_id);
     const blogs = blogss.map((project) => project.get({ plain: true }));
 
-    console.log(`\n\nDashboard name - ${req.session.user_id}\n\n`)
-    console.log(`\n\nDashboard name - ${JSON.stringify(BlogData)}\n\n`)
-    console.log(`\n\nDashboard name - ${JSON.stringify(blogss)}\n\n`)
     res.render('dashboard', { 
       blogs, 
       name: req.session.name, 
