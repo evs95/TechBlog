@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { Blog, User, Comment } = require('../../models');
 
-// GET all cards
+// GET all blogs
 router.get('/', async (req, res) => {
   try {
     const BlogData = await Blog.findAll({
@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET a single card
+// GET a single blog
 router.get('/:id', async (req, res) => {
   try {
     const BlogData = await Blog.findByPk(req.params.id, {
@@ -31,7 +31,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// CREATE a card
+// CREATE a blog
 router.post('/', async (req, res) => {
   try {
     const blogData = await Blog.create({
@@ -45,7 +45,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// UPDATE a card
+// UPDATE a blog
 router.put('/:id', async (req, res) => {
   try {
     const blogData = await Blog.update({
@@ -63,7 +63,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// DELETE a card
+// DELETE a blog
 router.delete('/:id', async (req, res) => {
   try {
     const BlogData = await Blog.destroy({
