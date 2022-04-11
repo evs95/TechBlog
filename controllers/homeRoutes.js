@@ -36,11 +36,8 @@ router.get('/login', (req, res) => {
   res.render('login');
 });
 
-router.get('/dashboard', async (req, res) => {
+router.get('/dashboard',withAuth, async (req, res) => {
   try {
-    if(req.session.logged_in == 'undefined' || !req.session.logged_in){
-      res.redirect('login');
-    }
 
     const BlogData = await Blog.findAll({
       include: [
