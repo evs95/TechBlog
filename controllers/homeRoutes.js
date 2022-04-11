@@ -68,11 +68,11 @@ router.get('/dashboard', async (req, res) => {
   }
 });
 
-router.get('/comment/blog/:id', async (req, res) => {
+router.get('/comment/blog/:id', withAuth, async (req, res) => {
   try {
-    if(req.session.logged_in == 'undefined' || !req.session.logged_in){
-      res.redirect('/login');
-    }
+    // if(req.session.logged_in == 'undefined' || !req.session.logged_in){
+    //   res.redirect('/login');
+    // }
     console.log(`Entered add comment route - ${req.params.id}`);
 
     const BlogData = await Blog.findByPk(req.params.id,{
