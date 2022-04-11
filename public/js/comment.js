@@ -14,7 +14,7 @@ const commentSubmitHandler = async (event) => {
   console.log(response);
       if (response.ok) {
         // If successful, redirect the browser to the profile page
-        document.location.replace('/');
+        document.location.replace(`/blogdetails/${blogId}`);
       } else {
         alert(response.statusText);
       }

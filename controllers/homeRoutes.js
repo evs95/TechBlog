@@ -10,13 +10,12 @@ router.get('/', async (req, res) => {
         {
           model: User,
           attributes: ['name'],
-        },
+        },{ model: Comment }
       ],
     });
 
     // Serialize data so the template can read it
     const blogs = BlogData.map((project) => project.get({ plain: true }));
-
     // Pass serialized data and session flag into template
     res.render('homepage', { 
       blogs, 
@@ -69,7 +68,7 @@ router.get('/dashboard', async (req, res) => {
   }
 });
 
-router.get('/addComment/blog/:id', async (req, res) => {
+router.get('/comment/blog/:id', async (req, res) => {
   try {
     if(req.session.logged_in == 'undefined' || !req.session.logged_in){
       res.redirect('/login');
@@ -80,17 +79,16 @@ router.get('/addComment/blog/:id', async (req, res) => {
       include: [
         {
           model: User
-        },
+        },{ model: Comment },
       ],
     });
 
     // Serialize data so the template can read it
     const blog =BlogData.get({ plain: true });
-    console.log(`\n\nadd comment route - get blog data - ${ JSON.stringify(blog)}`);
 
     // Pass serialized data and session flag into template
     res.render('comment', { 
-      blog, 
+      blog,
       logged_in: req.session.logged_in 
     });
   } catch (err) {
@@ -116,10 +114,41 @@ router.get('/blog/:id', async (req, res) => {
 
     // Serialize data so the template can read it
     const blog =BlogData.get({ plain: true });
-    console.log(`\n\nadd comment route - get blog data - ${ JSON.stringify(blog)}`);
 
     // Pass serialized data and session flag into template
     res.render('blog', { 
+      blog, 
+      logged_in: req.session.logged_in 
+    });
+  } catch (err) {
+    console.log(err)
+    res.status(500).json(err);
+  }
+});
+
+router.get('/blogdetails/:id', async (req, res) => {
+  try {
+    if(req.session.logged_in == 'undefined' || !req.session.logged_in){
+      res.redirect('/login');
+    }
+    console.log(`Entered blogdetails route - ${req.params.id}`);
+
+    const BlogData = await Blog.findByPk(req.params.id,{
+      include: [
+        {
+          model: User
+        },
+        {
+          model: Comment
+        }
+      ],
+    });
+
+    // Serialize data so the template can read it
+    const blog =BlogData.get({ plain: true });
+
+    // Pass serialized data and session flag into template
+    res.render('blogdetails', { 
       blog, 
       logged_in: req.session.logged_in 
     });

@@ -12,15 +12,18 @@
   </div>
 </div>
 
+{{#each blog.Comments as |Comment| }}
 <div class="card">
   <div class="card-header">
-    Comment
   </div>
   <div class="card-body">
     <blockquote class="blockquote mb-0">
-      <textarea id="comment-txt" style="width: 100%;height:120px"></textarea>
-      <button id="comment-submit" class="btn btn-primary">Submit</button>
+      <p>{{Comment.Description}}</p>
+      <footer class="blockquote-footer">Created by <cite title="Source Title">User with Id {{Comment.UserId}} on {{format_date Comment.createdAt}}</cite></footer>
     </blockquote>
   </div>
-  </a>
 </div>
+{{/each}}
+
+
+
